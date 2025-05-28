@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Produtos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     descricao TEXT,
-    tipo_chocolate VARCHAR(100), -- Ex: Ao Leite, Amargo, Branco, Recheado
+    tipo_chocolate VARCHAR(100), 
     marca VARCHAR(100),
     peso_gramas INTEGER,
     preco_unitario DECIMAL(10, 2) NOT NULL,
@@ -37,20 +37,20 @@ CREATE TABLE IF NOT EXISTS Produtos (
 -- Tabela Vendas
 CREATE TABLE IF NOT EXISTS Vendas (
     id SERIAL PRIMARY KEY,
-    cliente_id INTEGER REFERENCES Clientes(id) ON DELETE SET NULL, -- Permite vendas para clientes não cadastrados ou anônimos
+    cliente_id INTEGER REFERENCES Clientes(id) ON DELETE SET NULL, 
     vendedor_id INTEGER REFERENCES Vendedores(id) ON DELETE SET NULL,
     data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     valor_total DECIMAL(10, 2) NOT NULL,
-    status_pedido VARCHAR(50) DEFAULT 'Pendente' -- Ex: Pendente, Concluído, Cancelado
+    status_pedido VARCHAR(50) DEFAULT 'Pendente' 
 );
 
 -- Tabela ItensVenda (produtos em uma venda específica)
 CREATE TABLE IF NOT EXISTS ItensVenda (
     id SERIAL PRIMARY KEY,
     venda_id INTEGER NOT NULL REFERENCES Vendas(id) ON DELETE CASCADE,
-    produto_id INTEGER NOT NULL REFERENCES Produtos(id) ON DELETE RESTRICT, -- Não permite deletar produto se estiver em uma venda
+    produto_id INTEGER NOT NULL REFERENCES Produtos(id) ON DELETE RESTRICT, 
     quantidade INTEGER NOT NULL,
-    preco_unitario_venda DECIMAL(10, 2) NOT NULL -- Preço no momento da venda
+    preco_unitario_venda DECIMAL(10, 2) NOT NULL 
 );
 
 -- Dados iniciais 
@@ -83,7 +83,7 @@ INSERT INTO Produtos (nome, descricao, tipo_chocolate, marca, peso_gramas, preco
 ('Ovo de Páscoa Trufado Médio', 'Ovo de chocolate ao leite com recheio trufado.', 'Ao Leite Recheado', 'DoceMagia', 350, 45.00, 15, '2026-04-01'),
 ('Chocolate em Pó 50% Cacau', 'Ideal para receitas e bebidas quentes.', 'Pó', 'CacauIntenso', 200, 12.00, 35, '2026-07-15'),
 ('Barra Chocolate Meio Amargo com Laranja', 'Combinação de chocolate meio amargo com toque cítrico de laranja.', 'Meio Amargo Saborizado', 'ChocoBom', 100, 6.50, 28, '2025-12-01')
-ON CONFLICT (nome) DO NOTHING; -- Evita duplicidade se o script rodar mais de uma vez
+ON CONFLICT (nome) DO NOTHING; 
 
 -- Exemplo de como adicionar um índice para otimizar consultas
 CREATE INDEX IF NOT EXISTS idx_produtos_nome ON Produtos(nome);
